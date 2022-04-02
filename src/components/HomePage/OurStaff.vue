@@ -8,17 +8,17 @@
           <img :src="user.image" alt="" />
           <div class="buttons">
             <a id="social-fb" href="https://www.facebook.com/"
-              ><font-awesome-icon :icon="['fab', 'facebook-square']"
-            /></a>
+              ><i class="fa-brands fa-facebook-square"></i
+            ></a>
             <a id="social-tw" href="https://twitter.com/">
-              <font-awesome-icon :icon="['fab', 'twitter-square']"
-            /></a>
+              <i class="fa-brands fa-twitter-square"></i
+            ></a>
             <a id="social-gp" href="https://plus.google.com/"
-              ><font-awesome-icon :icon="['fab', 'google-plus-square']"
-            /></a>
+              ><i class="fa-brands fa-google"></i
+            ></a>
             <a id="social-inst" href="#"
-              ><font-awesome-icon :icon="['fab', 'instagram-square']"
-            /></a>
+              ><i class="fa-brands fa-instagram-square"></i
+            ></a>
           </div>
         </div>
         <a class="name" href="#">{{ user.name }}</a>

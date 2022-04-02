@@ -19,16 +19,14 @@
                   >
                     Add New Comment
                   </button>
-                  <vue-excel-xlsx
+
+                  <button
+                    type="button"
                     class="btn btn-excel"
-                    :data="comments"
-                    :columns="columns"
-                    :file-name="'filename'"
-                    :file-type="'xlsx'"
-                    :sheet-name="'sheetname'"
+                    @click="downloadExcel"
                   >
-                    Download
-                  </vue-excel-xlsx>
+                    Download Excel
+                  </button>
                   <button class="btn btn-pdf" @click="prientPDF">
                     Download PDf
                   </button>
@@ -113,7 +111,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-success" @click="addComment()">Add</button>
+          <button class="btn btn-add" @click="addComment()">Add</button>
         </div>
       </div>
     </div>
@@ -168,7 +166,7 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-info" @click="edituser(commentToEdit.id)">
+          <button class="btn btn-save-edit" @click="edituser(commentToEdit.id)">
             Save
           </button>
         </div>
@@ -177,6 +175,7 @@
   </div>
 </template>
 <script>
+let xlsx = require("json-as-xlsx");
 export default {
   name: "dataTable",
   data() {
@@ -202,6 +201,32 @@ export default {
       });
   },
   methods: {
+    downloadExcel() {
+      let arr = [];
+      this.comments.forEach((item) => {
+        arr.push(item);
+      });
+      let data = [
+        {
+          sheet: "Adults",
+          columns: [
+            { label: "NAME", value: "name" }, // Top level data
+            { label: "EMAIL", value: "email" }, // Custom format
+            {
+              label: "BODY",
+              value: "body",
+            },
+          ],
+          content: arr,
+        },
+      ];
+      let settings = {
+        fileName: "MySpreadsheet",
+        extraLength: 3,
+        writeOptions: {},
+      };
+      xlsx(data, settings);
+    },
     //PDF
     prientPDF() {
       let oldHtml = Object.assign(document.body.innerHTML, {});
@@ -218,7 +243,9 @@ export default {
       document.body.innerHTML = oldHtml;
     },
     // Add User
-    addCommentPopup() {},
+    addCommentPopup() {
+      this.$bvModal.show("addComment");
+    },
     addComment() {
       let lastId = this.comments.length + 1;
       var newRow = {
@@ -231,7 +258,7 @@ export default {
       this.name = "";
       this.email = "";
       this.body = "";
-      this.$bvModal.hide("my-modal");
+      this.$bvModal.hide("addComment");
     },
     //Edit User
     editCommitPopup(commentId) {
@@ -260,9 +287,11 @@ export default {
 };
 </script>
 <style>
-.btn {
+.btn,
+.btn:hover {
   color: #eee;
   border-radius: 10px;
+  margin: 0 10px;
 }
 .btn-excel {
   background-color: rgb(10, 168, 63);
@@ -272,5 +301,13 @@ export default {
 }
 .btn-pdf {
   background-color: rgb(136, 53, 15);
+}
+.btn-add {
+  background-color: rgb(23, 235, 94);
+  width: 100px;
+}
+.btn-save-edit {
+  background-color: rgb(22, 173, 233);
+  width: 100px;
 }
 </style>
