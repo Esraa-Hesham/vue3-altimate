@@ -111,7 +111,13 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-add" @click="addComment()">Add</button>
+          <button
+            class="btn btn-add"
+            data-bs-dismiss="modal"
+            @click="addComment()"
+          >
+            Add
+          </button>
         </div>
       </div>
     </div>
@@ -166,7 +172,11 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button class="btn btn-save-edit" @click="edituser(commentToEdit.id)">
+          <button
+            class="btn btn-save-edit"
+            data-bs-dismiss="modal"
+            @click="edituser(commentToEdit.id)"
+          >
             Save
           </button>
         </div>
@@ -176,6 +186,7 @@
 </template>
 <script>
 let xlsx = require("json-as-xlsx");
+
 export default {
   name: "dataTable",
   data() {
@@ -210,8 +221,8 @@ export default {
         {
           sheet: "Adults",
           columns: [
-            { label: "NAME", value: "name" }, // Top level data
-            { label: "EMAIL", value: "email" }, // Custom format
+            { label: "NAME", value: "name" },
+            { label: "EMAIL", value: "email" },
             {
               label: "BODY",
               value: "body",
@@ -243,9 +254,7 @@ export default {
       document.body.innerHTML = oldHtml;
     },
     // Add User
-    addCommentPopup() {
-      this.$bvModal.show("addComment");
-    },
+    addCommentPopup() {},
     addComment() {
       let lastId = this.comments.length + 1;
       var newRow = {
@@ -258,7 +267,7 @@ export default {
       this.name = "";
       this.email = "";
       this.body = "";
-      this.$bvModal.hide("addComment");
+      this.displayModal = false;
     },
     //Edit User
     editCommitPopup(commentId) {
@@ -266,8 +275,7 @@ export default {
         if (comment.id == commentId) {
           this.commentToEdit = Object.assign({}, comment);
         }
-      }),
-        this.$bvModal.show("my-modal-edit");
+      });
     },
 
     edituser(commentId) {
@@ -277,7 +285,6 @@ export default {
         }
         return comment;
       });
-      this.$bvModal.hide("my-modal-edit");
     },
     // alert to download Excel
     startDownload() {
